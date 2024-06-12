@@ -16,7 +16,8 @@ The `EducationDataAPI` package provides a simple and convenient way to access va
 ## Educational Data Portal API
 
 For more information about the available datasets and the API endpoints, please visit the following links:
-
+- [Project Overview](https://educationdata.urban.org/documentation/index.html)
+- [API Overview](https://educationdata.urban.org/documentation/schools.html#overview)
 - [Schools Directory](https://educationdata.urban.org/documentation/schools.html#overview)
 - [CCD Directory](https://educationdata.urban.org/documentation/schools.html#ccd_directory)
 - [CCD Enrollment](https://educationdata.urban.org/documentation/schools.html#ccd-enrollment-by-grade)

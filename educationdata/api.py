@@ -461,3 +461,356 @@ class EducationDataAPI:
         response = self.session.get(url)
         response.raise_for_status()  
         return response.json()
+    
+    def get_crdc_bullying_allegations(self, year, **kwargs):
+        """
+        Fetches the CRDC allegations of harassment or bullying data for a specified year with optional filters.
+
+        Args:
+            year (int): The academic year for which data is requested (e.g., 2015). Valid years: 2013, 2015, 2017.
+            **kwargs: Additional filtering options including:
+                - crdc_id (str): Office of Civil Rights school ID.
+                - ncessch (str): NCES school ID.
+                - leaid (str): Local education agency ID (NCES).
+                - fips (int): Federal Information Processing Standards state code.
+                - allegations_harass_sex (int): Number of allegations of harassment or bullying on the basis of sex.
+                - allegations_harass_race (int): Number of allegations of harassment or bullying on the basis of race, color, or national origin.
+                - allegations_harass_disability (int): Number of allegations of harassment or bullying on the basis of disability.
+                - allegations_harass_orientation (int): Number of allegations of harassment or bullying on the basis of sexual orientation.
+                - allegations_harass_religion (int): Number of allegations of harassment or bullying on the basis of religion.
+
+                For a full list of available filters and more detailed information, visit:
+                https://educationdata.urban.org/documentation/schools.html#crdc-harassment-or-bullying-allegations
+
+        Returns:
+            dict: The JSON response containing the allegations data.
+
+        Example:
+            >>> api = EducationDataAPI()
+            >>> bullying_data = api.get_crdc_bullying_allegations(2015, fips=1, allegations_harass_sex=10)
+            >>> print(bullying_data)
+        """
+        # Construct the URL
+        url = f"{self.BASE_URL}schools/crdc/harassment-or-bullying/{year}/allegations/"
+        
+        # Append additional query parameters
+        if kwargs:
+            query_string = '&'.join(f"{key}={value}" for key, value in kwargs.items())
+            url += f"?{query_string}"
+
+        # Make the request
+        response = self.session.get(url)
+        response.raise_for_status() 
+        return response.json()
+    
+    def get_crdc_bullying_segment(self, year, race_segment=False, sex_segment=False, disability_segment=False, lep_segment=False, **kwargs):
+        """
+        Fetches the CRDC bullying and harassment data for a specified year with optional segments and filters.
+
+        Only the following combinations of boolean flags are allowed:
+        - race_segment and sex_segment
+        - disability_segment and sex_segment
+        - lep_segment and sex_segment
+
+        Args:
+            year (int): The academic year for which data is requested (e.g., 2013). Valid years: 2011, 2013, 2015, 2017.
+            race_segment (bool): Include race segment in the API endpoint if True.
+            sex_segment (bool): Include sex segment in the API endpoint if True.
+            disability_segment (bool): Include disability segment in the API endpoint if True.
+            lep_segment (bool): Include limited English proficiency segment in the API endpoint if True.
+            **kwargs: Additional filtering options including:
+                - crdc_id (str): Office of Civil Rights school ID.
+                - ncessch (str): NCES school ID.
+                - leaid (str): Local education agency ID (NCES).
+                - fips (int): Federal Information Processing Standards state code.
+                - sex (int): Filter by sex. Values are 1 (Male), 2 (Female), 3 (Gender), 9 (Unknown).
+                - race (int): Filter by race/ethnicity. Values from 1 (White) to 4 (Asian) and others.
+                - disability (int): Filter by students with disabilities. Values from 0 (Students without disabilities) to 3 (Students not served under IDEA).
+                - lep (int): Filter by students with limited English proficiency. Values are 1 (Students who are limited English proficient) and 99 (All students).
+                - students_disc_harass_dis (int): Number of students disciplined for bullying or harassment on the basis of disability.
+                - students_disc_harass_race (int): Number of students disciplined for bullying or harassment on the basis of race, color, or national origin.
+                - students_disc_harass_sex (int): Number of students disciplined for bullying or harassment on the basis of sex.
+                - students_report_harass_dis (int): Number of students harassed or bullied on the basis of disability.
+                - students_report_harass_race (int): Number of students harassed or bullied on the basis of race, color, or national origin.
+                - students_report_harass_sex (int): Number of students harassed or bullied on the basis of sex.
+
+        Returns:
+            dict: The JSON response containing the bullying and harassment data.
+
+        Example:
+            >>> api = EducationDataAPI()
+            >>> bullying_data = api.get_crdc_bullying_segment(2013, race_segment=True, sex_segment=True)
+            >>> print(bullying_data)
+            >>> filtered_data = api.get_crdc_bullying_segment(2013, disability_segment=True, sex_segment=True, fips=1)
+            >>> print(filtered_data)
+        """
+        # Validate combinations of boolean flags
+        if race_segment and not sex_segment:
+            raise ValueError("Race can only be combined with sex.")
+        if disability_segment and not sex_segment:
+            raise ValueError("Disability can only be combined with sex.")
+        if lep_segment and not sex_segment:
+            raise ValueError("LEP can only be combined with sex.")
+        if (race_segment and disability_segment) or (race_segment and lep_segment) or (disability_segment and lep_segment):
+            raise ValueError("Only the combinations (race and sex), (disability and sex), and (lep and sex) are allowed.")
+
+        # Construct the URL based on provided arguments
+        url = f"{self.BASE_URL}schools/crdc/harassment-or-bullying/{year}/"
+        if race_segment and sex_segment:
+            url += "race/sex/"
+        elif disability_segment and sex_segment:
+            url += "disability/sex/"
+        elif lep_segment and sex_segment:
+            url += "lep/sex/"
+
+        # Append additional query parameters
+        if kwargs:
+            query_string = '&'.join(f"{key}={value}" for key, value in kwargs.items())
+            url += f"?{query_string}"
+
+        # Make the request
+        response = self.session.get(url)
+        response.raise_for_status()  
+        return response.json()
+    
+    def get_crdc_absenteeism_segment(self, year, race_segment=False, sex_segment=False, disability_segment=False, lep_segment=False, **kwargs):
+        """
+        Fetches the CRDC chronic absenteeism data for a specified year with optional segments and filters.
+
+        Only the following combinations of boolean flags are allowed:
+        - race_segment and sex_segment
+        - disability_segment and sex_segment
+        - lep_segment and sex_segment
+
+        Args:
+            year (int): The academic year for which data is requested (e.g., 2013). Valid years: 2013, 2015.
+            race_segment (bool): Include race segment in the API endpoint if True.
+            sex_segment (bool): Include sex segment in the API endpoint if True.
+            disability_segment (bool): Include disability segment in the API endpoint if True.
+            lep_segment (bool): Include limited English proficiency segment in the API endpoint if True.
+            **kwargs: Additional filtering options including:
+                - crdc_id (str): Office of Civil Rights school ID.
+                - ncessch (str): NCES school ID.
+                - leaid (str): Local education agency ID (NCES).
+                - fips (int): Federal Information Processing Standards state code.
+                - sex (int): Filter by sex. Values are 1 (Male), 2 (Female), 3 (Gender), 9 (Unknown).
+                - race (int): Filter by race/ethnicity. Values from 1 (White) to 4 (Asian) and others.
+                - disability (int): Filter by students with disabilities. Values from 0 (Students without disabilities) to 3 (Students not served under IDEA).
+                - lep (int): Filter by students with limited English proficiency. Values are 1 (Students who are limited English proficient) and 99 (All students).
+                - students_chronically_absent (int): Number of chronically absent students.
+
+        Returns:
+            dict: The JSON response containing the chronic absenteeism data.
+
+        Example:
+            >>> api = EducationDataAPI()
+            >>> absenteeism_data = api.get_crdc_absenteeism_segment(2013, race_segment=True, sex_segment=True)
+            >>> print(absenteeism_data)
+            >>> filtered_data = api.get_crdc_absenteeism_segment(2015, disability_segment=True, sex_segment=True, fips=1)
+            >>> print(filtered_data)
+        """
+        # Validate combinations of boolean flags
+        if race_segment and not sex_segment:
+            raise ValueError("Race can only be combined with sex.")
+        if disability_segment and not sex_segment:
+            raise ValueError("Disability can only be combined with sex.")
+        if lep_segment and not sex_segment:
+            raise ValueError("LEP can only be combined with sex.")
+        if (race_segment and disability_segment) or (race_segment and lep_segment) or (disability_segment and lep_segment):
+            raise ValueError("Only the combinations (race and sex), (disability and sex), and (lep and sex) are allowed.")
+
+        # Construct the URL based on provided arguments
+        url = f"{self.BASE_URL}schools/crdc/chronic-absenteeism/{year}/"
+        if race_segment and sex_segment:
+            url += "race/sex/"
+        elif disability_segment and sex_segment:
+            url += "disability/sex/"
+        elif lep_segment and sex_segment:
+            url += "lep/sex/"
+
+        # Append additional query parameters
+        if kwargs:
+            query_string = '&'.join(f"{key}={value}" for key, value in kwargs.items())
+            url += f"?{query_string}"
+
+        # Make the request
+        response = self.session.get(url)
+        response.raise_for_status()  
+        return response.json()
+    
+    def get_crdc_restraint_instances(self, year, **kwargs):
+        """
+        Fetches the CRDC restraint and seclusion instances data for a specified year with optional filters.
+
+        Args:
+            year (int): The academic year for which data is requested (e.g., 2015). Valid years: 2013, 2015, 2017.
+            **kwargs: Additional filtering options including:
+                - crdc_id (str): Office of Civil Rights school ID.
+                - ncessch (str): NCES school ID.
+                - leaid (str): Local education agency ID (NCES).
+                - fips (int): Federal Information Processing Standards state code.
+                - disability (int): Filter by students with disabilities. Values are 0 (Students without disabilities), 1 (Students with disabilities served under IDEA), 2 (Students with disabilities served under Section 504 only), 3 (Students not served under IDEA).
+                - instances_mech_restraint (int): Number of instances of mechanical restraint.
+                - instances_phys_restraint (int): Number of instances of physical restraint.
+                - instances_seclusion (int): Number of instances of seclusion.
+
+        Returns:
+            dict: The JSON response containing the restraint and seclusion data.
+
+        Example:
+            >>> api = EducationDataAPI()
+            >>> restraint_data = api.get_crdc_restraint_instances(2015, fips=1, disability=1)
+            >>> print(restraint_data)
+        """
+        # Construct the URL
+        url = f"{self.BASE_URL}schools/crdc/restraint-and-seclusion/{year}/instances/"
+        
+        # Append additional query parameters
+        if kwargs:
+            query_string = '&'.join(f"{key}={value}" for key, value in kwargs.items())
+            url += f"?{query_string}"
+
+        # Make the request
+        response = self.session.get(url)
+        response.raise_for_status()  
+        return response.json()
+    
+    def get_crdc_restraint_segment(self, year, disability_segment=False, sex_segment=False, race_segment=False, lep_segment=False, **kwargs):
+        """
+        Fetches the CRDC restraint and seclusion data for a specified year with optional segments and filters.
+
+        Only the following combinations of boolean flags are allowed:
+        - disability_segment and sex_segment
+        - disability_segment, race_segment, and sex_segment
+        - disability_segment, lep_segment, and sex_segment
+
+        Args:
+            year (int): The academic year for which data is requested (e.g., 2013). Valid years: 2011, 2013, 2015, 2017.
+            disability_segment (bool): Include disability segment in the API endpoint if True.
+            sex_segment (bool): Include sex segment in the API endpoint if True.
+            race_segment (bool): Include race segment in the API endpoint if True.
+            lep_segment (bool): Include limited English proficiency segment in the API endpoint if True.
+            **kwargs: Additional filtering options including:
+                - crdc_id (str): Office of Civil Rights school ID.
+                - ncessch (str): NCES school ID.
+                - leaid (str): Local education agency ID (NCES).
+                - fips (int): Federal Information Processing Standards state code.
+                - sex (int): Filter by sex. Values are 1 (Male), 2 (Female), 3 (Gender), 9 (Unknown).
+                - race (int): Filter by race/ethnicity. Values from 1 (White) to 4 (Asian) and others.
+                - disability (int): Filter by students with disabilities. Values from 0 (Students without disabilities) to 3 (Students not served under IDEA).
+                - lep (int): Filter by students with limited English proficiency. Values are 1 (Students who are limited English proficient) and 99 (All students).
+                - students_mech_restraint (int): Number of students subjected to mechanical restraint.
+                - students_phys_restraint (int): Number of students subjected to physical restraint.
+                - students_seclusion (int): Number of students subjected to seclusion.
+
+        Returns:
+            dict: The JSON response containing the restraint and seclusion data.
+
+        Example:
+            >>> api = EducationDataAPI()
+            >>> restraint_data = api.get_crdc_restraint_segment(2013, disability_segment=True, sex_segment=True)
+            >>> print(restraint_data)
+            >>> filtered_data = api.get_crdc_restraint_segment(2015, disability_segment=True, race_segment=True, sex_segment=True, fips=1)
+            >>> print(filtered_data)
+        """
+        # Validate combinations of boolean flags
+        if disability_segment and not sex_segment:
+            raise ValueError("Disability can only be combined with sex.")
+        if race_segment and not (disability_segment and sex_segment):
+            raise ValueError("Race can only be combined with disability and sex.")
+        if lep_segment and not (disability_segment and sex_segment):
+            raise ValueError("LEP can only be combined with disability and sex.")
+        if (race_segment and lep_segment):
+            raise ValueError("Race and LEP cannot be combined together.")
+        if not (disability_segment and sex_segment):
+            raise ValueError("At least disability and sex must be combined.")
+
+        # Construct the URL based on provided arguments
+        url = f"{self.BASE_URL}schools/crdc/restraint-and-seclusion/{year}/"
+        if disability_segment and sex_segment and race_segment:
+            url += "disability/race/sex/"
+        elif disability_segment and sex_segment and lep_segment:
+            url += "disability/lep/sex/"
+        elif disability_segment and sex_segment:
+            url += "disability/sex/"
+
+        # Append additional query parameters
+        if kwargs:
+            query_string = '&'.join(f"{key}={value}" for key, value in kwargs.items())
+            url += f"?{query_string}"
+
+        # Make the request
+        response = self.session.get(url)
+        response.raise_for_status()  
+        return response.json()
+    
+    def get_crdc_advanced_enrollment_segment(self, year, race_segment=False, sex_segment=False, disability_segment=False, lep_segment=False, **kwargs):
+        """
+        Fetches the CRDC advanced enrollment data for a specified year with optional segments and filters.
+
+        Only the following combinations of boolean flags are allowed:
+        - race_segment and sex_segment
+        - disability_segment and sex_segment
+        - lep_segment and sex_segment
+
+        Args:
+            year (int): The academic year for which data is requested (e.g., 2013). Valid years: 2011, 2013, 2015, 2017.
+            race_segment (bool): Include race segment in the API endpoint if True.
+            sex_segment (bool): Include sex segment in the API endpoint if True.
+            disability_segment (bool): Include disability segment in the API endpoint if True.
+            lep_segment (bool): Include limited English proficiency segment in the API endpoint if True.
+            **kwargs: Additional filtering options including:
+                - crdc_id (str): Office of Civil Rights school ID.
+                - ncessch (str): NCES school ID.
+                - leaid (str): Local education agency ID (NCES).
+                - fips (int): Federal Information Processing Standards state code.
+                - sex (int): Filter by sex. Values are 1 (Male), 2 (Female), 3 (Gender), 9 (Unknown).
+                - race (int): Filter by race/ethnicity. Values from 1 (White) to 4 (Asian) and others.
+                - disability (int): Filter by students with disabilities. Values from 0 (Students without disabilities) to 3 (Students not served under IDEA).
+                - lep (int): Filter by students with limited English proficiency. Values are 1 (Students who are limited English proficient) and 99 (All students).
+                - enrl_IB (int): Students enrolled in the International Baccalaureate Diploma Program.
+                - enrl_gifted_talented (int): Students who are enrolled in the gifted and talented programs.
+                - enrl_AP (int): Students enrolled in at least one Advanced Placement (AP) course.
+                - enrl_AP_science (int): Students enrolled in at least one AP science course.
+                - enrl_AP_math (int): Students enrolled in at least one AP mathematics course.
+                - enrl_AP_other (int): Students enrolled in at least one 'other' AP course (e.g., foreign language, computer science).
+                - enrl_AP_language (int): Students enrolled in one or more AP language courses.
+
+        Returns:
+            dict: The JSON response containing the advanced enrollment data.
+
+        Example:
+            >>> api = EducationDataAPI()
+            >>> advanced_enrollment_data = api.get_crdc_advanced_enrollment_segment(2013, race_segment=True, sex_segment=True)
+            >>> print(advanced_enrollment_data)
+            >>> filtered_data = api.get_crdc_advanced_enrollment_segment(2015, disability_segment=True, sex_segment=True, fips=1)
+            >>> print(filtered_data)
+        """
+        # Validate combinations of boolean flags
+        if race_segment and not sex_segment:
+            raise ValueError("Race can only be combined with sex.")
+        if disability_segment and not sex_segment:
+            raise ValueError("Disability can only be combined with sex.")
+        if lep_segment and not sex_segment:
+            raise ValueError("LEP can only be combined with sex.")
+        if (race_segment and disability_segment) or (race_segment and lep_segment) or (disability_segment and lep_segment):
+            raise ValueError("Only the combinations (race and sex), (disability and sex), and (lep and sex) are allowed.")
+
+        # Construct the URL based on provided arguments
+        url = f"{self.BASE_URL}schools/crdc/ap-ib-enrollment/{year}/"
+        if race_segment and sex_segment:
+            url += "race/sex/"
+        elif disability_segment and sex_segment:
+            url += "disability/sex/"
+        elif lep_segment and sex_segment:
+            url += "lep/sex/"
+
+        # Append additional query parameters
+        if kwargs:
+            query_string = '&'.join(f"{key}={value}" for key, value in kwargs.items())
+            url += f"?{query_string}"
+
+        # Make the request
+        response = self.session.get(url)
+        response.raise_for_status()  
+        return response.json()

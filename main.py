@@ -15,7 +15,14 @@ def main():
     # data = api.get_crdc_directory(2013, fips=13, charter_crdc=1)
     # data = api.get_crdc_enrollment(2013, race_segment=True, sex_segment=True, race=3, sex=1)
     # data = api.get_crdc_discipline(2017, fips=1, disability=1)
-    data = api.get_crdc_discipline_segment(2013, disability_segment=True, sex_segment=True, fips=1)
+    # data = api.get_crdc_discipline_segment(2013, disability_segment=True, sex_segment=True, fips=1)
+    # data = api.get_crdc_bullying_allegations(2015, fips=1, allegations_harass_sex=10)
+    # data = api.get_crdc_bullying_segment(2013, race_segment=True, sex_segment=True, race=1, sex=1)
+    # data = api.get_crdc_absenteeism_segment(2013, race_segment=True, sex_segment=True, race=1, sex=1)
+    # data = api.get_crdc_restraint_instances(2015, fips=1, disability=1)
+    # data = api.get_crdc_restraint_segment(2013, disability_segment=True, sex_segment=True, fips=1, disability=1)
+    data = api.get_crdc_advanced_enrollment_segment(2013, race_segment=True, sex_segment=True, race=1, sex=1)
+
 
     if args.output:
         # Ensure the 'json' directory exists
