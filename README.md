@@ -19,11 +19,7 @@ For more information about the available datasets and the API endpoints, please 
 - [Project Overview](https://educationdata.urban.org/documentation/index.html)
 - [API Overview](https://educationdata.urban.org/documentation/schools.html#overview)
 - [Schools Directory](https://educationdata.urban.org/documentation/schools.html#overview)
-- [CCD Directory](https://educationdata.urban.org/documentation/schools.html#ccd_directory)
-- [CCD Enrollment](https://educationdata.urban.org/documentation/schools.html#ccd-enrollment-by-grade)
-- [CRDC Directory](https://educationdata.urban.org/documentation/schools.html#crdc-directory)
-- [CRDC Enrollment](https://educationdata.urban.org/documentation/schools.html#crdc-enrollment)
-- [CRDC Discipline](https://educationdata.urban.org/documentation/schools.html#crdc-discipline)
+- [API Version History](https://educationdata.urban.org/documentation/index.html#versions)
 
 ## Getting Started
 
