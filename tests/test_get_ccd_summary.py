@@ -1,10 +1,11 @@
-import pytest
+# test_get_ccd_summary.py
+
 import time
+import pytest
+from setup import SLEEP
 from educationdata import EducationDataAPI
 
 api = EducationDataAPI()
-
-SLEEP = 0.25
 
 def test_summary_stat_functions():
     stats = ['sum', 'count', 'avg', 'median', 'min', 'max', 'variance', 'stddev']

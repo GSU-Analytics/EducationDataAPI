@@ -10,7 +10,7 @@ def main():
     args = parser.parse_args()
 
     api = EducationDataAPI()
-    # data = api.get_ccd_directory(2013, charter=1, fips=11)
+    data = api.get_ccd_directory(2013, charter=1, fips=11)
     # data = api.get_ccd_enrollment(2014, 8, race=3, sex=1)
     # data = api.get_crdc_directory(2013, fips=13, charter_crdc=1)
     # data = api.get_crdc_enrollment(2013, race_segment=True, sex_segment=True, race=3, sex=1)
@@ -42,7 +42,7 @@ def main():
     # data = api.get_metadata_endpoints()
     # data = api.get_metadata_downloads()
     # data = api.get_metadata_variables()
-    data = api.get_metadata_endpoint_varlist()
+    # data = api.get_metadata_endpoint_varlist()
 
 
     if args.output:
