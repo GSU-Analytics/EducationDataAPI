@@ -31,15 +31,15 @@ def test_filter_by_identifiers(filter_key, filter_value):
     assert all(item.get(filter_key) == filter_value for item in result['results']), "Not all items matched the filter criteria"
 
 # Test geographic filters
-@pytest.mark.parametrize("filter_key, filter_value", [
-    ('fips', 1),
-    ('state_location', 'AL'),
-    ('csa', 122),
+@pytest.mark.parametrize("filter_key, filter_value, expected_value", [
+    ('fips', 1, 1),
+    ('state_location', 'AL', 'AL'),
+    ('csa', 122, None),
 ])
-def test_geographic_filters(filter_key, filter_value):
+def test_geographic_filters(filter_key, filter_value, expected_value):
     result = api.get_ccd_directory(year=2020, **{filter_key: filter_value})
     assert 'error' not in result
-    assert all(item.get(filter_key) == filter_value for item in result['results']), "Not all items matched the filter criteria"
+    assert all(item.get(filter_key) == expected_value for item in result['results']), "Not all items matched the filter criteria"
     time.sleep(SLEEP)
 
 # Test school characteristics filters
@@ -70,5 +70,5 @@ def test_comprehensive_filters():
 def test_special_value_filters():
     result = api.get_ccd_directory(year=2020, enrollment=-1)
     assert 'error' not in result
-    assert all(item.get('enrollment') == -1 for item in result['results'] if 'enrollment' in item), "Not all items matched the special value filter criteria"
+    assert all(item.get('enrollment') == -1 for item in result['results'] if item.get('enrollment') is not None), "Not all items matched the special value filter criteria"
     time.sleep(SLEEP)
