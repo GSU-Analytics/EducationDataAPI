@@ -306,38 +306,38 @@ Existing tests are live integration tests. Keep that pattern. After refactoring:
 
 ## Implementation phases
 
-### Phase 1 — Clean up and scaffold
-- [ ] Delete `main.py`
-- [ ] Delete `json/` folder (add `json/` to `.gitignore` first in case it's recreated)
-- [ ] Delete `educationdata/` (old location)
-- [ ] Move `SLEEP = 0.25` from `tests/setup.py` into `tests/conftest.py`, then delete `tests/setup.py`
-- [ ] Run `uv init --no-workspace` to initialize uv in the repo root
-- [ ] Write `pyproject.toml` (see above)
-- [ ] Run `uv sync` to generate `uv.lock`
-- [ ] Create `src/educationdata/` directory structure
+### Phase 1 — Clean up and scaffold ✓ DONE
+- [x] Delete `main.py`
+- [x] Delete `json/` folder (add `json/` to `.gitignore` first in case it's recreated)
+- [x] Delete `educationdata/` (old location)
+- [x] Move `SLEEP = 0.25` from `tests/setup.py` into `tests/conftest.py`, then delete `tests/setup.py`
+- [x] Write `pyproject.toml` (see above)
+- [x] Run `uv sync` to generate `uv.lock`
+- [x] Create `src/educationdata/` directory structure
+- [x] Delete `tests/pytest.ini` (pytest config moved to pyproject.toml)
 
-### Phase 2 — Core components
-- [ ] Write `src/educationdata/_result.py` (`EducationDataResult`)
-- [ ] Write `src/educationdata/_pagination.py` (`fetch_all_pages`)
-- [ ] Write `src/educationdata/__init__.py` (exports `EducationDataAPI`, `EducationDataResult`)
+### Phase 2 — Core components ✓ DONE
+- [x] Write `src/educationdata/_result.py` (`EducationDataResult`)
+- [x] Write `src/educationdata/_pagination.py` (`fetch_all_pages`)
+- [x] Write `src/educationdata/__init__.py` (exports `EducationDataAPI`, `EducationDataResult`)
 
-### Phase 3 — Refactor existing methods
-- [ ] Write `src/educationdata/_client.py` with all 24 consolidated school methods
-- [ ] Drop all `get_` prefixes
-- [ ] Replace boolean segment flags with `by: list[str]` + `_build_segment_path`
-- [ ] Wire every method through `fetch_all_pages`
-- [ ] Add type hints throughout (`year: int`, `by: list[str]`, `**kwargs: int | str`)
+### Phase 3 — Refactor existing methods ✓ DONE
+- [x] Write `src/educationdata/_client.py` with all 27 consolidated school methods
+- [x] Drop all `get_` prefixes
+- [x] Replace boolean segment flags with `by: list[str]` + `_build_segment_path`
+- [x] Wire every method through `fetch_all_pages`
+- [x] Add type hints throughout (`year: int`, `by: list[str]`, `**kwargs`)
 
-### Phase 4 — New topics
+### Phase 4 — New topics (DEFERRED)
 - [ ] Read district docs at https://educationdata.urban.org/documentation/school-districts.html, implement district methods
 - [ ] Read colleges/IPEDS docs at https://educationdata.urban.org/documentation/colleges.html, implement college methods
 
-### Phase 5 — Tests & docs
-- [ ] Update existing tests: drop `get_` prefix, call `.to_dict()` on results instead of treating as raw dict
-- [ ] Move pytest config from `tests/pytest.ini` into `pyproject.toml`
-- [ ] Add unit tests (no network) for `_result.py` and `_pagination.py` using `unittest.mock`
-- [ ] Update README with install instructions, usage examples for all three topics
-- [ ] Update CLAUDE.md to reflect completed refactor
+### Phase 5 — Tests & docs ✓ DONE
+- [x] Update existing tests: drop `get_` prefix, call `.to_dict()` on results instead of treating as raw dict
+- [x] Move pytest config from `tests/pytest.ini` into `pyproject.toml`
+- [x] Add unit tests (no network) for `_result.py` and `_pagination.py` using `unittest.mock`
+- [x] Update README with install instructions and full method table
+- [x] Update CLAUDE.md to reflect completed refactor (file is in .gitignore, updated on disk only)
 
 ### Phase 6 — Publish
 - [ ] Confirm import name (`educationdata` vs `urban_education_data`) with repo owner before this step
