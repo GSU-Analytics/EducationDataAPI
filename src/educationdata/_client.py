@@ -437,3 +437,665 @@ class EducationDataAPI:
             raise ValueError("year must be between 2013 and 2020 inclusive.")
         url = _build_url(f"schools/meps/{year}/", **kwargs)
         return fetch_all_pages(self.session, url)
+
+    # ------------------------------------------------------------------
+    # School Districts — CCD
+    # ------------------------------------------------------------------
+
+    def district_directory(self, year: int, **kwargs) -> EducationDataResult:
+        """CCD local education agency directory for a given year.
+
+        Args:
+            year: Academic year (1986–2024).
+        """
+        url = _build_url(f"school-districts/ccd/directory/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    def district_enrollment(
+        self, year: int, grade: int, by: list[str] = [], **kwargs
+    ) -> EducationDataResult:
+        """CCD district enrollment by grade with optional demographic breakdowns.
+
+        Args:
+            year: Academic year (1986–2024).
+            grade: Grade level (-1=PreK, 0–12, 99=Total).
+            by: Demographic segments. Valid combinations:
+                [], ["race"], ["sex"], ["race", "sex"].
+        """
+        valid: list[tuple] = [(), ("race",), ("sex",), ("race", "sex")]
+        seg = _build_segment_path(by, valid)
+        url = _build_url(f"school-districts/ccd/enrollment/{year}/grade-{grade}/{seg}", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    def district_finance(self, year: int, **kwargs) -> EducationDataResult:
+        """CCD district finance data.
+
+        Args:
+            year: Academic year (1991, 1994–2020).
+        """
+        url = _build_url(f"school-districts/ccd/finance/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    # ------------------------------------------------------------------
+    # School Districts — SAIPE
+    # ------------------------------------------------------------------
+
+    def district_poverty(self, year: int, **kwargs) -> EducationDataResult:
+        """SAIPE district poverty estimates.
+
+        Args:
+            year: Academic year (1995, 1997, 1999–2024).
+        """
+        url = _build_url(f"school-districts/saipe/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    # ------------------------------------------------------------------
+    # School Districts — EdFacts
+    # ------------------------------------------------------------------
+
+    def district_edfacts_assessments(
+        self, year: int, grade: int, by: list[str] = [], **kwargs
+    ) -> EducationDataResult:
+        """EdFacts district-level state assessments.
+
+        Args:
+            year: Academic year (2009–2018, 2020).
+            grade: EDFacts grade category (e.g. 3–8, 11).
+            by: Optional segment. Valid values:
+                [], ["race"], ["sex"], ["special-populations"].
+        """
+        valid: list[tuple] = [
+            (),
+            ("race",),
+            ("sex",),
+            ("special-populations",),
+        ]
+        seg = _build_segment_path(by, valid)
+        url = _build_url(
+            f"school-districts/edfacts/assessments/{year}/grade-{grade}/{seg}", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def district_edfacts_grad_rates(self, year: int, **kwargs) -> EducationDataResult:
+        """EdFacts district adjusted cohort graduation rates.
+
+        Args:
+            year: Academic year (2010–2019).
+        """
+        url = _build_url(f"school-districts/edfacts/grad-rates/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    # ------------------------------------------------------------------
+    # Colleges — IPEDS
+    # ------------------------------------------------------------------
+
+    def ipeds_directory(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS postsecondary institution directory.
+
+        Args:
+            year: Academic year (1980, 1984–2024).
+        """
+        url = _build_url(f"college-university/ipeds/directory/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_institutional_characteristics(
+        self, year: int, **kwargs
+    ) -> EducationDataResult:
+        """IPEDS institutional characteristics.
+
+        Args:
+            year: Academic year (1980, 1984–2024).
+        """
+        url = _build_url(
+            f"college-university/ipeds/institutional-characteristics/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_admissions_enrollment(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS applications, admissions, and enrollments.
+
+        Args:
+            year: Academic year (2001–2022).
+        """
+        url = _build_url(
+            f"college-university/ipeds/admissions-enrollment/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_admissions_requirements(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS admissions requirements.
+
+        Args:
+            year: Academic year (1990–2022).
+        """
+        url = _build_url(
+            f"college-university/ipeds/admissions-requirements/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_academic_year_tuition(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS tuition and fees (academic-year programs).
+
+        Args:
+            year: Academic year (1986–2021).
+        """
+        url = _build_url(
+            f"college-university/ipeds/academic-year-tuition/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_academic_year_tuition_prof_program(
+        self, year: int, **kwargs
+    ) -> EducationDataResult:
+        """IPEDS tuition and fees by professional degree program.
+
+        Args:
+            year: Academic year (1986–2008, 2010–2021).
+        """
+        url = _build_url(
+            f"college-university/ipeds/academic-year-tuition-prof-program/{year}/",
+            **kwargs,
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_academic_year_room_board_other(
+        self, year: int, **kwargs
+    ) -> EducationDataResult:
+        """IPEDS room, board, and other expenses (academic-year programs).
+
+        Args:
+            year: Academic year (1999–2021).
+        """
+        url = _build_url(
+            f"college-university/ipeds/academic-year-room-board-other/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_program_year_tuition_cip(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS tuition and fees by CIP code (program-year programs).
+
+        Args:
+            year: Academic year (1987–2021).
+        """
+        url = _build_url(
+            f"college-university/ipeds/program-year-tuition-cip/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_program_year_room_board_other(
+        self, year: int, **kwargs
+    ) -> EducationDataResult:
+        """IPEDS room, board, and other expenses (program-year programs).
+
+        Args:
+            year: Academic year (1999–2021).
+        """
+        url = _build_url(
+            f"college-university/ipeds/program-year-room-board-other/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_fall_enrollment(
+        self,
+        year: int,
+        by: list[str],
+        level: str | None = None,
+        **kwargs,
+    ) -> EducationDataResult:
+        """IPEDS fall enrollment with required demographic breakdown.
+
+        Args:
+            year: Academic year.
+            by: Required segment. Valid combinations:
+                ["race", "sex"] (requires level),
+                ["age", "sex"] (requires level),
+                ["residence"] (no level needed).
+            level: Level of study for race/sex and age/sex breakdowns
+                   (e.g. "undergraduate", "graduate", "1", "2").
+
+        Years available:
+            race/sex — 1986–2022
+            age/sex  — 1991, 1993, 1995, 1997, 1999–2020
+            residence — 1986, 1988, 1992, 1994, 1996, 1998, 2000–2020
+        """
+        key = tuple(sorted(by))
+        if key == ("race", "sex"):
+            if level is None:
+                raise ValueError("level is required for by=['race', 'sex']")
+            url = _build_url(
+                f"college-university/ipeds/fall-enrollment/{year}/{level}/race/sex/",
+                **kwargs,
+            )
+        elif key == ("age", "sex"):
+            if level is None:
+                raise ValueError("level is required for by=['age', 'sex']")
+            url = _build_url(
+                f"college-university/ipeds/fall-enrollment/{year}/{level}/age/sex/",
+                **kwargs,
+            )
+        elif key == ("residence",):
+            url = _build_url(
+                f"college-university/ipeds/fall-enrollment/{year}/residence/", **kwargs
+            )
+        else:
+            raise ValueError(
+                f"Invalid 'by': {by!r}. Valid: ['race','sex'], ['age','sex'], ['residence']"
+            )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_enrollment_full_time_equivalent(
+        self, year: int, level: int | str, **kwargs
+    ) -> EducationDataResult:
+        """IPEDS full-time-equivalent enrollment by level of study.
+
+        Args:
+            year: Academic year (1997–2021).
+            level: Level of study (integer code, e.g. 2).
+        """
+        url = _build_url(
+            f"college-university/ipeds/enrollment-full-time-equivalent/{year}/{level}/",
+            **kwargs,
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_enrollment_headcount(
+        self, year: int, level: int | str, **kwargs
+    ) -> EducationDataResult:
+        """IPEDS enrollment headcount by level of study.
+
+        Args:
+            year: Academic year (1996–2021).
+            level: Level of study (integer code, e.g. 1).
+        """
+        url = _build_url(
+            f"college-university/ipeds/enrollment-headcount/{year}/{level}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_fall_retention(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS fall retention rates.
+
+        Args:
+            year: Academic year (2003–2020).
+        """
+        url = _build_url(f"college-university/ipeds/fall-retention/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_finance(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS institutional finance data.
+
+        Args:
+            year: Academic year (1979, 1983–2017).
+        """
+        url = _build_url(f"college-university/ipeds/finance/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_student_faculty_ratio(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS student-to-faculty ratio.
+
+        Args:
+            year: Academic year (2009–2020).
+        """
+        url = _build_url(
+            f"college-university/ipeds/student-faculty-ratio/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_sfa_grants_and_net_price(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS student financial aid: grants and net price.
+
+        Args:
+            year: Academic year (2008–2021).
+        """
+        url = _build_url(
+            f"college-university/ipeds/sfa-grants-and-net-price/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_sfa_by_living_arrangement(
+        self, year: int, **kwargs
+    ) -> EducationDataResult:
+        """IPEDS student financial aid by living arrangement.
+
+        Args:
+            year: Academic year (2008–2021).
+        """
+        url = _build_url(
+            f"college-university/ipeds/sfa-by-living-arrangement/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_sfa_by_tuition_type(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS student financial aid by tuition type.
+
+        Args:
+            year: Academic year (1999–2021).
+        """
+        url = _build_url(
+            f"college-university/ipeds/sfa-by-tuition-type/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_sfa_all_undergraduates(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS student financial aid for all undergraduates.
+
+        Args:
+            year: Academic year (2007–2021).
+        """
+        url = _build_url(
+            f"college-university/ipeds/sfa-all-undergraduates/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_sfa_ftft(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS student financial aid for first-time, full-time undergraduates.
+
+        Args:
+            year: Academic year (1999–2021).
+        """
+        url = _build_url(f"college-university/ipeds/sfa-ftft/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_grad_rates(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS graduation rates (150 percent of normal time).
+
+        Args:
+            year: Academic year (1996–2022).
+        """
+        url = _build_url(f"college-university/ipeds/grad-rates/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_grad_rates_200pct(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS graduation rates (200 percent of normal time).
+
+        Args:
+            year: Academic year (2007–2022).
+        """
+        url = _build_url(f"college-university/ipeds/grad-rates-200pct/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_grad_rates_pell(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS graduation rates by type of federal aid (Pell recipients).
+
+        Args:
+            year: Academic year (2015–2017).
+        """
+        url = _build_url(f"college-university/ipeds/grad-rates-pell/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_outcome_measures(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS outcome measures for non-traditional students.
+
+        Args:
+            year: Academic year (2015–2021).
+        """
+        url = _build_url(f"college-university/ipeds/outcome-measures/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_completers(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS number of completers by award level.
+
+        Args:
+            year: Academic year (2011–2021).
+        """
+        url = _build_url(f"college-university/ipeds/completers/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_completions_cip_2(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS completions by 2-digit CIP code.
+
+        Args:
+            year: Academic year (1991–2022).
+        """
+        url = _build_url(
+            f"college-university/ipeds/completions-cip-2/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_completions_cip_6(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS completions by 6-digit CIP code.
+
+        Args:
+            year: Academic year (1983–2022).
+        """
+        url = _build_url(
+            f"college-university/ipeds/completions-cip-6/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_academic_libraries(self, year: int, **kwargs) -> EducationDataResult:
+        """IPEDS academic library data.
+
+        Args:
+            year: Academic year (2013–2020).
+        """
+        url = _build_url(
+            f"college-university/ipeds/academic-libraries/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_salaries_instructional_staff(
+        self, year: int, **kwargs
+    ) -> EducationDataResult:
+        """IPEDS instructional staff salaries.
+
+        Args:
+            year: Academic year (1980, 1984–1999, 2001–2022).
+        """
+        url = _build_url(
+            f"college-university/ipeds/salaries-instructional-staff/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def ipeds_salaries_noninstructional_staff(
+        self, year: int, **kwargs
+    ) -> EducationDataResult:
+        """IPEDS noninstructional staff salaries.
+
+        Args:
+            year: Academic year (2012–2022).
+        """
+        url = _build_url(
+            f"college-university/ipeds/salaries-noninstructional-staff/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    # ------------------------------------------------------------------
+    # Colleges — Scorecard
+    # ------------------------------------------------------------------
+
+    def scorecard_institutional_characteristics(
+        self, year: int, **kwargs
+    ) -> EducationDataResult:
+        """College Scorecard institutional characteristics.
+
+        Args:
+            year: Academic year (1996–2020).
+        """
+        url = _build_url(
+            f"college-university/scorecard/institutional-characteristics/{year}/",
+            **kwargs,
+        )
+        return fetch_all_pages(self.session, url)
+
+    def scorecard_student_characteristics(
+        self, year: int, variant: str, **kwargs
+    ) -> EducationDataResult:
+        """College Scorecard student characteristics.
+
+        Args:
+            year: Academic year (1997–2016).
+            variant: Sub-endpoint. Valid values:
+                "aid-applicants", "home-neighborhood".
+        """
+        valid = {"aid-applicants", "home-neighborhood"}
+        if variant not in valid:
+            raise ValueError(
+                f"Invalid variant {variant!r}. Valid: {sorted(valid)}"
+            )
+        url = _build_url(
+            f"college-university/scorecard/student-characteristics/{year}/{variant}/",
+            **kwargs,
+        )
+        return fetch_all_pages(self.session, url)
+
+    def scorecard_earnings(self, year: int, **kwargs) -> EducationDataResult:
+        """College Scorecard post-enrollment earnings.
+
+        Args:
+            year: Academic year (2003–2014, 2018).
+        """
+        url = _build_url(f"college-university/scorecard/earnings/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    def scorecard_default(self, year: int, **kwargs) -> EducationDataResult:
+        """College Scorecard student loan default rates.
+
+        Args:
+            year: Academic year (1996–2020).
+        """
+        url = _build_url(f"college-university/scorecard/default/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    def scorecard_repayment(self, year: int, **kwargs) -> EducationDataResult:
+        """College Scorecard student loan repayment rates.
+
+        Args:
+            year: Academic year (2007–2016).
+        """
+        url = _build_url(f"college-university/scorecard/repayment/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    # ------------------------------------------------------------------
+    # Colleges — NHGIS
+    # ------------------------------------------------------------------
+
+    def college_nhgis_geographic_variables(
+        self, endpoint: str, year: int, **kwargs
+    ) -> EducationDataResult:
+        """NHGIS geographic variables joined to college records.
+
+        Args:
+            endpoint: Census vintage. Valid values:
+                "census-1990", "census-2000", "census-2010", "census-2020".
+            year: Academic year (1980, 1984–2023).
+        """
+        valid_endpoints = {"census-1990", "census-2000", "census-2010", "census-2020"}
+        if endpoint not in valid_endpoints:
+            raise ValueError(
+                f"Invalid endpoint {endpoint!r}. Valid: {sorted(valid_endpoints)}"
+            )
+        url = _build_url(f"college-university/nhgis/{endpoint}/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    # ------------------------------------------------------------------
+    # Colleges — FSA
+    # ------------------------------------------------------------------
+
+    def fsa_financial_responsibility(self, year: int, **kwargs) -> EducationDataResult:
+        """FSA financial responsibility composite scores.
+
+        Args:
+            year: Academic year (2006–2016).
+        """
+        url = _build_url(
+            f"college-university/fsa/financial-responsibility/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def fsa_grants(self, year: int, **kwargs) -> EducationDataResult:
+        """FSA federal grant aid disbursements.
+
+        Args:
+            year: Academic year (1999–2021).
+        """
+        url = _build_url(f"college-university/fsa/grants/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    def fsa_loans(self, year: int, **kwargs) -> EducationDataResult:
+        """FSA federal loan disbursements.
+
+        Args:
+            year: Academic year (1999–2021).
+        """
+        url = _build_url(f"college-university/fsa/loans/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    def fsa_campus_based_volume(self, year: int, **kwargs) -> EducationDataResult:
+        """FSA campus-based federal aid award volumes.
+
+        Args:
+            year: Academic year (2001–2021).
+        """
+        url = _build_url(
+            f"college-university/fsa/campus-based-volume/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def fsa_90_10_revenue(self, year: int, **kwargs) -> EducationDataResult:
+        """FSA 90/10 revenue percentages for for-profit institutions.
+
+        Args:
+            year: Academic year (2014–2021).
+        """
+        url = _build_url(
+            f"college-university/fsa/90-10-revenue-percentages/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    # ------------------------------------------------------------------
+    # Colleges — NACUBO / NCCS / EADA / Campus Crime / PSEO
+    # ------------------------------------------------------------------
+
+    def nacubo_endowments(self, year: int, **kwargs) -> EducationDataResult:
+        """NACUBO college and university endowments.
+
+        Args:
+            year: Academic year (2012–2022).
+        """
+        url = _build_url(f"college-university/nacubo/endowments/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    def nccs_990_forms(self, year: int, **kwargs) -> EducationDataResult:
+        """NCCS IRS Form 990 data for nonprofit institutions.
+
+        Args:
+            year: Academic year (1993–2016).
+        """
+        url = _build_url(f"college-university/nccs/990-forms/{year}/", **kwargs)
+        return fetch_all_pages(self.session, url)
+
+    def eada_institutional_characteristics(
+        self, year: int, **kwargs
+    ) -> EducationDataResult:
+        """EADA equity in athletics data by institution.
+
+        Args:
+            year: Academic year (2002–2021).
+        """
+        url = _build_url(
+            f"college-university/eada/institutional-characteristics/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def campus_crime_hate_crimes(self, year: int, **kwargs) -> EducationDataResult:
+        """Campus Safety and Security hate crime incidents.
+
+        Args:
+            year: Academic year (2005–2021).
+        """
+        url = _build_url(
+            f"college-university/campus-crime/hate-crimes/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)
+
+    def pseo_earnings_and_flows(self, year: int, **kwargs) -> EducationDataResult:
+        """PSEO post-secondary employment outcomes: earnings and flows.
+
+        Args:
+            year: Academic year (2001–2021).
+        """
+        url = _build_url(
+            f"college-university/pseo/earnings-and-flows/{year}/", **kwargs
+        )
+        return fetch_all_pages(self.session, url)

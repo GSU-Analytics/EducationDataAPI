@@ -101,6 +101,78 @@ Pagination is automatic — you always get the complete dataset.
 | `nhgis_geographic_variables(endpoint, year, **filters)` | `endpoint`: `"census-2010"`, `"census-2000"`, `"census-1990"` |
 | `meps_school_poverty(year, **filters)` | `year`: 2013–2020 |
 
+### School Districts — CCD / SAIPE / EdFacts
+
+| Method | Key parameters |
+|---|---|
+| `district_directory(year, **filters)` | |
+| `district_enrollment(year, grade, by=[], **filters)` | `by`: `[]`, `["race"]`, `["sex"]`, `["race","sex"]` |
+| `district_finance(year, **filters)` | |
+| `district_poverty(year, **filters)` | SAIPE poverty estimates |
+| `district_edfacts_assessments(year, grade, by=[], **filters)` | `by`: `[]`, `["race"]`, `["sex"]`, `["special-populations"]` |
+| `district_edfacts_grad_rates(year, **filters)` | |
+
+### Colleges — IPEDS
+
+| Method | Key parameters |
+|---|---|
+| `ipeds_directory(year, **filters)` | |
+| `ipeds_institutional_characteristics(year, **filters)` | |
+| `ipeds_admissions_enrollment(year, **filters)` | |
+| `ipeds_admissions_requirements(year, **filters)` | |
+| `ipeds_fall_enrollment(year, by, level=None, **filters)` | `by`: `["race","sex"]`, `["age","sex"]`, `["residence"]`; `level` required for race/sex and age/sex |
+| `ipeds_enrollment_full_time_equivalent(year, level, **filters)` | |
+| `ipeds_enrollment_headcount(year, level, **filters)` | |
+| `ipeds_fall_retention(year, **filters)` | |
+| `ipeds_academic_year_tuition(year, **filters)` | |
+| `ipeds_academic_year_tuition_prof_program(year, **filters)` | |
+| `ipeds_academic_year_room_board_other(year, **filters)` | |
+| `ipeds_program_year_tuition_cip(year, **filters)` | |
+| `ipeds_program_year_room_board_other(year, **filters)` | |
+| `ipeds_sfa_grants_and_net_price(year, **filters)` | |
+| `ipeds_sfa_by_living_arrangement(year, **filters)` | |
+| `ipeds_sfa_by_tuition_type(year, **filters)` | |
+| `ipeds_sfa_all_undergraduates(year, **filters)` | |
+| `ipeds_sfa_ftft(year, **filters)` | First-time full-time undergrads |
+| `ipeds_finance(year, **filters)` | |
+| `ipeds_student_faculty_ratio(year, **filters)` | |
+| `ipeds_grad_rates(year, **filters)` | 150% normal time |
+| `ipeds_grad_rates_200pct(year, **filters)` | 200% normal time |
+| `ipeds_grad_rates_pell(year, **filters)` | By federal aid type |
+| `ipeds_outcome_measures(year, **filters)` | |
+| `ipeds_completers(year, **filters)` | |
+| `ipeds_completions_cip_2(year, **filters)` | By 2-digit CIP |
+| `ipeds_completions_cip_6(year, **filters)` | By 6-digit CIP |
+| `ipeds_academic_libraries(year, **filters)` | |
+| `ipeds_salaries_instructional_staff(year, **filters)` | |
+| `ipeds_salaries_noninstructional_staff(year, **filters)` | |
+
+### Colleges — Scorecard
+
+| Method | Key parameters |
+|---|---|
+| `scorecard_institutional_characteristics(year, **filters)` | |
+| `scorecard_student_characteristics(year, variant, **filters)` | `variant`: `"aid-applicants"`, `"home-neighborhood"` |
+| `scorecard_earnings(year, **filters)` | |
+| `scorecard_default(year, **filters)` | |
+| `scorecard_repayment(year, **filters)` | |
+
+### Colleges — NHGIS / FSA / NACUBO / NCCS / EADA / Campus Crime / PSEO
+
+| Method | Key parameters |
+|---|---|
+| `college_nhgis_geographic_variables(endpoint, year, **filters)` | `endpoint`: `"census-1990"` … `"census-2020"` |
+| `fsa_financial_responsibility(year, **filters)` | |
+| `fsa_grants(year, **filters)` | |
+| `fsa_loans(year, **filters)` | |
+| `fsa_campus_based_volume(year, **filters)` | |
+| `fsa_90_10_revenue(year, **filters)` | For-profit institutions |
+| `nacubo_endowments(year, **filters)` | |
+| `nccs_990_forms(year, **filters)` | IRS Form 990 |
+| `eada_institutional_characteristics(year, **filters)` | Equity in athletics |
+| `campus_crime_hate_crimes(year, **filters)` | |
+| `pseo_earnings_and_flows(year, **filters)` | Post-secondary employment |
+
 ## Development
 
 ```bash

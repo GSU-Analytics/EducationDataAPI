@@ -328,9 +328,12 @@ Existing tests are live integration tests. Keep that pattern. After refactoring:
 - [x] Wire every method through `fetch_all_pages`
 - [x] Add type hints throughout (`year: int`, `by: list[str]`, `**kwargs`)
 
-### Phase 4 — New topics (DEFERRED)
-- [ ] Read district docs at https://educationdata.urban.org/documentation/school-districts.html, implement district methods
-- [ ] Read colleges/IPEDS docs at https://educationdata.urban.org/documentation/colleges.html, implement college methods
+### Phase 4 — New topics ✓ DONE
+- [x] Discover district endpoints via live metadata API (docs pages are JS-rendered)
+- [x] Implement district methods: district_directory, district_enrollment (with by=[]), district_finance, district_poverty (SAIPE), district_edfacts_assessments, district_edfacts_grad_rates
+- [x] Discover college endpoints via live metadata API
+- [x] Implement all college-university methods: full IPEDS suite (29 methods), Scorecard (5), NHGIS (1), FSA (5), NACUBO, NCCS, EADA, Campus Crime, PSEO
+- [x] Note: actual URL prefix is "college-university/" not "colleges/"; confirmed from live metadata
 
 ### Phase 5 — Tests & docs ✓ DONE
 - [x] Update existing tests: drop `get_` prefix, call `.to_dict()` on results instead of treating as raw dict
