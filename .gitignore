@@ -90,3 +90,7 @@ dmypy.json
 
 # Pylint
 .pylint.d/
+
+# Claude
+.claude/
+CLAUDE.md
