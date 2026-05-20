@@ -88,7 +88,7 @@ class EducationDataAPI:
 
         See https://educationdata.urban.org/documentation/schools.html#ccd_summary
         """
-        url = _build_url(f"schools/ccd/summary/", var=var, stat=stat, by=by, **kwargs)
+        url = _build_url(f"schools/ccd/directory/summaries/", var=var, stat=stat, by=by, **kwargs)
         return fetch_all_pages(self.session, url)
 
     def ccd_enrollment(
