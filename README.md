@@ -181,7 +181,3 @@ uv run pytest     # run all tests (integration tests hit live API)
 uv run pytest tests/test_unit.py   # unit tests only (no network)
 uv build          # build dist/
 ```
-
-## License
-
-MIT

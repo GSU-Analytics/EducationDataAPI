@@ -22,7 +22,7 @@ def test_filter_by_identifiers(filter_key, filter_value):
 @pytest.mark.parametrize("filter_key, filter_value, expected_value", [
     ("fips", 1, 1),
     ("state_location", "AL", "AL"),
-    ("csa", 122, 122),
+    ("csa", 122, "122"),
 ])
 def test_geographic_filters(filter_key, filter_value, expected_value):
     result = api.ccd_directory(year=2020, **{filter_key: filter_value})

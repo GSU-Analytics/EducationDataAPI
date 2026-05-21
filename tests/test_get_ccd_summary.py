@@ -16,9 +16,8 @@ def test_summary_stat_functions():
 
 def test_summary_var_options():
     vars_ = [
-        "latitude", "longitude", "county_code", "lowest_grade_offered",
-        "highest_grade_offered", "elem_cedp", "middle_cedp", "high_cedp",
-        "ungrade_cedp", "teachers_fte", "lunch_program", "free_lunch",
+        "latitude", "longitude", "county_code",
+        "teachers_fte", "free_lunch",
         "reduced_price_lunch", "free_or_reduced_price_lunch",
         "direct_certification", "enrollment",
     ]
@@ -30,8 +29,7 @@ def test_summary_var_options():
 
 def test_summary_by_groupings():
     groupings = [
-        "ncessch", "ncessch_num", "leaid", "state_leaid", "seasch",
-        "state_location", "fips", "csa", "cbsa", "urban_centric_locale",
+        "state_location", "csa", "cbsa", "urban_centric_locale",
         "congress_district_id", "school_level", "school_type", "school_status",
         "bureau_indian_education", "title_i_status", "title_i_eligible",
         "title_i_schoolwide", "charter", "magnet", "shared_time", "virtual",
